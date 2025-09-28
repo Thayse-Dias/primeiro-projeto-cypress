@@ -1,55 +1,85 @@
-// ====== Cenários de Testes de Login ======
+// ====== Cenários de Testes  ======
 
 import userData from '../fixtures/userData.json'
 //Const userData importado do arquivo userData.json
 
 describe('Orange HRM Tests', () => {
 
+  // Mapeamento dos seletores utilizados nos testes
   const selectorsList = {
     usernameField: "[name='username']",
     passwordField: "[name='password']",
     loginButton: "[type='submit']",
     selectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
-    dashboardGrid: ".orangehrm-dashboard-grid", //Verificação do título do Dashboard
+    dashboardGrid: ".orangehrm-dashboard-grid", 
     wrongCredentialsAlert: ".oxd-alert",
     myInfoButton: "[href='/web/index.php/pim/viewMyDetails']",
     firstNameField: "[name='firstName']",
     lastNameField: "[name='lastName']",
     genericField: ".oxd-input--active",
     dateField: "[placeholder='yyyy-dd-mm']",
+    textField: ".oxd-select-text-input",
+    dropdownOptions: ".oxd-select-dropdown",
     dateCloseButton: ".--close",
     submitButton: "[type='submit']",
   }
 
-  // Cenário de Teste 1: Login com Sucesso e navegação até a página 'My Info'
   // baseUrl (cy.visit) definida no cypress.config.js
   // Utilizando o selector por atributo, através do comando 'get' para localizar os elementos na página.
+  // Relatório de testes gerado automaticamente em cypress/reports
   
+  // CENÁRIO 1: LOGIN BEM-SUCEDIDO E ATUALIZAÇÃO DE DADOS PESSOAIS
   it.only('User Info Update - Sucess', () => {
+    // Fluxo de Login
     cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userSucess.username) 
     cy.get(selectorsList.passwordField).type(userData.userSucess.password)
     cy.get(selectorsList.loginButton).click()
-    cy.location('pathname').should('equal', '/web/index.php/dashboard/index') 
-    cy.get(selectorsList.dashboardGrid)
-    cy.get(selectorsList.myInfoButton).click() //Acessando a página 'My Info' do site
-    cy.get(selectorsList.firstNameField).clear().type('FirstNameTest') //Atualizando o campo 'First Name'
-    cy.get(selectorsList.lastNameField).clear().type('LastNameTest') //Atualizando o campo 'Last Name'
-    cy.get(selectorsList.genericField).eq(3).clear().type('EmployeeId') //Atualizando o campo 'Employee Id'
-    cy.get(selectorsList.genericField).eq(4).clear().type('otherTest') 
-    cy.get(selectorsList.genericField).eq(5).clear().type('DriverLicenseTest')
-    cy.get(selectorsList.dateField).eq(0).clear().type('1983-03-26') //Atualizando o campo 'Date of Birth'
-    cy.get(selectorsList.dateCloseButton).click() //Fechando o calendário do campo 'Date of Birth'
-    cy.get(selectorsList.submitButton).eq(0).click() //Salvando as alterações
-    cy.get('body').should('contain.text', 'Successfully Updated') //Verificação da mensagem de sucesso
+    
+    // Verificações pós-login
+    cy.location('pathname').should('equal', '/web/index.php/dashboard/index') // Confirma redirecionamento
+    cy.get(selectorsList.dashboardGrid) // Verifica elemento do dashboard
+    
+    // Navegação para My Info
+    cy.get(selectorsList.myInfoButton).click()
+    
+    // Atualização de dados pessoais
+    cy.get(selectorsList.firstNameField).clear().type('FirstNameTest') // Nome
+    cy.get(selectorsList.lastNameField).clear().type('LastNameTest') // Sobrenome
+    cy.get(selectorsList.genericField).eq(3).clear().type('EmployeeId') // ID do funcionário
+    cy.get(selectorsList.genericField).eq(4).clear().type('otherTest') // Outro ID
+    cy.get(selectorsList.genericField).eq(5).clear().type('DriverLicenseTest') // Carteira de motorista
+    
+    // Data de expiração da licença
+    cy.get(selectorsList.dateField).eq(0).clear().type('2030-01-01')
+    cy.get(selectorsList.dateCloseButton).click() // Fecha calendário
+    
+    // Seleção de nacionalidade (dropdown)
+    cy.get(selectorsList.textField).eq(0).click() // Abre dropdown
+    cy.get(selectorsList.dropdownOptions).contains('Brazilian').click() // Seleciona opção
+    
+    // Seleção de estado civil (dropdown)
+    cy.get(selectorsList.textField).eq(1).click() // Abre dropdown
+    cy.get(selectorsList.dropdownOptions).contains('Married').click() // Seleciona opção
+    
+    // Data de nascimento
+    cy.get(selectorsList.dateField).eq(1).clear().type('1983-03-26')
+    cy.get(selectorsList.dateCloseButton).click() // Fecha calendário
+    
+    // Salva alterações e verifica sucesso
+    cy.get(selectorsList.submitButton).eq(0).click()
+    cy.get('body').should('contain.text', 'Successfully Updated') // Confirma mensagem
   })
 
-  // Cenário de Teste 2: Login sem Sucesso 
+  // CENÁRIO 2: LOGIN MAL-SUCEDIDO - CREDENCIAIS INVÁLIDAS
   it('Login - Fail', () => {
+    // Fluxo de login com credenciais inválidas
     cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userFail.username)
     cy.get(selectorsList.passwordField).type(userData.userFail.password)
     cy.get(selectorsList.loginButton).click()
+    
+    // Verificação de mensagem de erro
     cy.get(selectorsList.wrongCredentialsAlert).contains('Invalid credentials')
   })
 
