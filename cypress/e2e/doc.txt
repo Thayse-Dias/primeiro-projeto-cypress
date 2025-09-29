@@ -1,12 +1,28 @@
+// ====== Cenários de Testes  ======
+
+// baseUrl (cy.visit) definida no cypress.config.js
+// Utilizando o selector por atributo, através do comando 'get' para localizar os elementos na página.
+// Relatório de testes gerado automaticamente em cypress/reports
+
+
 import userData from '../fixtures/userData.json'
-import loginPage from '../pages/loginPage.js'
-import dashboardPage from '../pages/dashboardPage.js'
-import menuPage from '../pages/menuPage.js'
+//Const userData importado do arquivo userData.json
+import LoginPage from '../pages/loginPage.js'
+//Import da classe loginPage do arquivo loginPage.js
+
+const loginPage = new LoginPage()
 
 describe('Orange HRM Tests', () => {
 
   // Mapeamento dos seletores utilizados nos testes
   const selectorsList = {
+    usernameField: "[name='username']",
+    passwordField: "[name='password']",
+    loginButton: "[type='submit']",
+    selectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
+    dashboardGrid: ".orangehrm-dashboard-grid", 
+    wrongCredentialsAlert: ".oxd-alert",
+    myInfoButton: "[href='/web/index.php/pim/viewMyDetails']",
     firstNameField: "[name='firstName']",
     lastNameField: "[name='lastName']",
     genericField: ".oxd-input--active",
@@ -17,16 +33,20 @@ describe('Orange HRM Tests', () => {
     submitButton: "[type='submit']",
   }
 
+  // CENÁRIO 1: LOGIN BEM-SUCEDIDO E ATUALIZAÇÃO DE DADOS PESSOAIS
   it.only('User Info Update - Sucess', () => {
-    // Utilização dos métodos da classe loginPage para realizar o login
-    loginPage.acessLoginPage()
-    loginPage.loginWithCredentials(userData.userSucess.username, userData.userSucess.password)
+    // Fluxo de Login
+    cy.visit('/auth/login')
+    cy.get(selectorsList.usernameField).type(userData.userSucess.username) 
+    cy.get(selectorsList.passwordField).type(userData.userSucess.password)
+    cy.get(selectorsList.loginButton).click()
     
-    // Verificação de que o login foi bem-sucedido, utilizando o método da classe dashboardPage
-    dashboardPage.checkDashboardPage()
+    // Verificações pós-login
+    cy.location('pathname').should('equal', '/web/index.php/dashboard/index') // Confirma redirecionamento
+    cy.get(selectorsList.dashboardGrid) // Verifica elemento do dashboard
     
     // Navegação para My Info
-    menuPage.accessMyInfo() 
+    cy.get(selectorsList.myInfoButton).click()
     
     // Atualização de dados pessoais
     cy.get(selectorsList.firstNameField).clear().type('FirstNameTest') // Nome
@@ -54,21 +74,18 @@ describe('Orange HRM Tests', () => {
     // Salva alterações e verifica sucesso
     cy.get(selectorsList.submitButton).eq(0).click({force: true}) // Força clique no botão salvar
     cy.get('body').should('contain.text', 'Successfully Updated') // Confirma mensagem
-
-    // Navegação para Performance
-    menuPage.accessPerformance()
-    
-    // Navegação para Directory
-    menuPage.accessDirectory()
   })
 
   // CENÁRIO 2: LOGIN MAL-SUCEDIDO - CREDENCIAIS INVÁLIDAS
   it('Login - Fail', () => {
-    // Fluxo de login com credenciais inválidas - usando a página de login
-    loginPage.acessLoginPage()
-    loginPage.loginWithCredentials(userData.userFail.username, userData.userFail.password)
+    // Fluxo de login com credenciais inválidas
+    cy.visit('/auth/login')
+    cy.get(selectorsList.usernameField).type(userData.userFail.username)
+    cy.get(selectorsList.passwordField).type(userData.userFail.password)
+    cy.get(selectorsList.loginButton).click()
     
     // Verificação de mensagem de erro
-    cy.get(loginPage.selectorsList().wrongCredentialsAlert).contains('Invalid credentials')
+    cy.get(selectorsList.wrongCredentialsAlert).contains('Invalid credentials')
   })
+
 })
