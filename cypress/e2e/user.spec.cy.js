@@ -62,7 +62,7 @@ describe('Orange HRM Tests', () => {
     menuPage.accessDirectory()
   })
 
-  // CENÁRIO 2: LOGIN MAL-SUCEDIDO - CREDENCIAIS INVÁLIDAS
+  // CENÁRIO: LOGIN MAL-SUCEDIDO - CREDENCIAIS INVÁLIDAS
   it('Login - Fail', () => {
     // Fluxo de login com credenciais inválidas - usando a página de login
     loginPage.acessLoginPage()
