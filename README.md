@@ -72,17 +72,21 @@ npx cypress run --spec "cypress/e2e/**/*"
 ### 🗂️ Estrutura do Projeto
 
 cypress/
+├── e2e/
+│   ├── orangeHRM.spec.cy.js      # Testes principais (My Info, Performance, Directory)
+│   └── login.spec.cy.js          # Testes específicos de autenticação
 ├── fixtures/
-│   └── userData.json          # Dados de teste (credenciais)
-├── pages/                     # Page Objects
+│   └── userData.json             # Massa de dados para testes
+├── pages/                        # Page Objects
 │   ├── loginPage.js
 │   ├── dashboardPage.js
-│   └── menuPage.js
-├── e2e/
-│   └── orangeHRM.spec.js      # Testes principais
-├── reports/                   # Relatórios de execução
-└── config/
-    └── cypress.config.js      # Configuração do Cypress
+│   ├── menuPage.js
+│   ├── myInfoPage.js
+│   └── performancePage.js
+├── support/
+│   ├── commands.js
+│   └── e2e.js
+└── downloads/                    # Arquivos baixados durante testes
 
 
 
@@ -92,3 +96,7 @@ cypress/
     - Confiança: Validações em múltiplos pontos do fluxo
     - Data-Driven: Separação entre teste e dados de teste
     - Relatórios: Evidências detalhadas de execução
+
+📄 Licença
+>
+Este projeto é para fins educacionais e de demonstração.
