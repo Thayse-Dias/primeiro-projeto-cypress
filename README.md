@@ -6,8 +6,6 @@ Este projeto realiza testes end-to-end (E2E) no sistema Orange HRM utilizando Cy
 📦 Pré-requisitos
 - Node.js 16+ instalado
 
-- npm ou yarn
-
 ⚙️ Instalação
 
 ``` bash
@@ -23,8 +21,16 @@ Modo Headless (Terminal)
 ```bash
 npx cypress run
 ```
+Executar Testes Específicos
+```bash
+# Executar apenas testes de login
 
+npx cypress run --spec "cypress/e2e/login.spec.js"
 
+# Executar todos os testes
+
+npx cypress run --spec "cypress/e2e/**/*"
+```
 ## 📋 Estrutura dos Testes
 
 ### 🎯 Objetivo
