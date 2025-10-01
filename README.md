@@ -3,14 +3,27 @@
 ## 🧡 Orange HRM Test Automation
 Este projeto realiza testes end-to-end (E2E) no sistema Orange HRM utilizando Cypress, seguindo padrões de Page Objects e Data-Driven Testing.
 
-## Instalação
+📦 Pré-requisitos
+- Node.js 16+ instalado
+
+- npm ou yarn
+
+⚙️ Instalação
 
 ``` bash
 npm install
 ```
-##### **NOTA:**
->
-> É necessário ter o **node** instalado
+🏃‍♂️ Execução dos Testes
+
+Modo Desenvolvimento (Interface Gráfica)
+```bash
+npx cypress open
+```
+Modo Headless (Terminal)
+```bash
+npx cypress run
+```
+
 
 ## 📋 Estrutura dos Testes
 
@@ -65,10 +78,7 @@ cypress/
 └── config/
     └── cypress.config.js      # Configuração do Cypress
 
-### 🔧 Configuração e Execução
-     - Pré-requisitos
-     - Node.js instalado
-     - Cypress configurado no projeto
+
 
 ### 💡 Práticas de Qualidade
     - Código Limpo: Nomenclatura clara e estrutura consistente
