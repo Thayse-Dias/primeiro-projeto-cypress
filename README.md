@@ -3,6 +3,12 @@
 ## 🧡 Orange HRM Test Automation
 Este projeto realiza testes end-to-end (E2E) no sistema Orange HRM utilizando Cypress, seguindo padrões de Page Objects e Data-Driven Testing.
 
+## Instalação
+
+``` bash
+npm install
+```
+
 ## 📋 Estrutura dos Testes
 
 ### 🎯 Objetivo
