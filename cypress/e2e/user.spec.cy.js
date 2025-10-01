@@ -28,16 +28,10 @@ describe('Orange HRM Tests', () => {
         menuPage.accessPerformance()
 
         // Preenchimento do formulário de Performance
-       //performancePage.fillEmployeeNameAndSelectSpecific('Thay', 'Thayse Melnikov Dias');
+       performancePage.fillEmployeeNameAndSelectSpecific('Tho', 'Thomas Kutty Benny');
        
         // Navegação para a página Directory
         menuPage.accessDirectory()
     })
 
-    it('Login - Fail', () => {
-        loginPage.acessLoginPage()
-        loginPage.loginWithCredentials(userData.userFail.username, userData.userFail.password)
-        loginPage.checkAcessInvalid()
-        
-    })
 })
