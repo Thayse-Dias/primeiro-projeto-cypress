@@ -8,6 +8,7 @@ Este projeto realiza testes end-to-end (E2E) no sistema Orange HRM utilizando Cy
 ``` bash
 npm install
 ```
+> É necessário ter o node instalado
 
 ## 📋 Estrutura dos Testes
 
